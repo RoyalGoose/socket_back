@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./deploy/Dockerfile
+      target: prod
+    image: socket_back:${SOCKET_BACK_VERSION:-latest}
+    restart: always
+    env_file:
+    - .env
+    environment:
+      SOCKET_BACK_HOST: 0.0.0.0
+      SOCKET_BACK_DB_FILE: /db_data/db.sqlite3
+    volumes:
+    - socket_back-db-data:/db_data/
+
+
+
+volumes:
+  socket_back-db-data:
+    name: socket_back-db-data
