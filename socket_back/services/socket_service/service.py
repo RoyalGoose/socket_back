@@ -19,5 +19,4 @@ class SocketService:
 
     async def stop(self) -> None:
         """Stop socket session."""
-        if self.recieve_messages_task:
-            self.recieve_messages_task.cancel()
+        self.recieve_messages_task.cancel()
