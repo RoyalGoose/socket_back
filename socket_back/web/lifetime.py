@@ -6,6 +6,7 @@ from sqlalchemy.engine import create_engine
 from socket_back.db.config import database
 from socket_back.db.meta import meta
 from socket_back.db.models import load_all_models
+from socket_back.services.socket_service.lifetime import init_socket, shutdown_socket
 from socket_back.settings import settings
 
 
@@ -36,6 +37,7 @@ def register_startup_event(
         app.middleware_stack = None
         await database.connect()
         await _create_tables()
+        await init_socket(app)
         app.middleware_stack = app.build_middleware_stack()
         pass  # noqa: WPS420
 
@@ -55,6 +57,7 @@ def register_shutdown_event(
     @app.on_event("shutdown")
     async def _shutdown() -> None:  # noqa: WPS430
         await database.disconnect()
+        await shutdown_socket(app)
         pass  # noqa: WPS420
 
     return _shutdown
