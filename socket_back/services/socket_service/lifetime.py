@@ -19,4 +19,4 @@ async def shutdown_socket(app: FastAPI) -> None:
 
     :param app: current application.
     """
-    await app.state.socket_session.stop
+    await app.state.socket_session.stop()
